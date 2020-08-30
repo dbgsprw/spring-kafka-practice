@@ -23,8 +23,8 @@ public class KafkaProducerTests {
 
     @Test
     public void produce() throws ExecutionException, InterruptedException {
-        ListenableFuture<SendResult<Integer, String>> future = kafkaProducer.sendMessage("test service");
-        SendResult<Integer, String> sendResult = future.get();
+        ListenableFuture<SendResult<String, String>> future = kafkaProducer.sendMessage("test key", "test service");
+        SendResult<String, String> sendResult = future.get();
         assertEquals(sendResult.getRecordMetadata().topic(), topicName);
         assertEquals(sendResult.getProducerRecord().value(), "test service");
     }
