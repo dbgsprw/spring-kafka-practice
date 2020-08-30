@@ -1,5 +1,6 @@
 package dbgsprw.springkafkapractice.kafka.consumer;
 
+import dbgsprw.springkafkapractice.Task;
 import dbgsprw.springkafkapractice.kafka.producer.KafkaProducer;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.slf4j.Logger;
@@ -22,10 +23,11 @@ public class KafkaConsumer {
         String value = consumerRecord.value();
         logger.info("Received message. {}:{}", key, value);
         try {
-            redisTemplate.opsForValue().set(key, "RUNNING");
+            redisTemplate.opsForValue().set(key, Task.RUNNING);
             Thread.sleep(10000);
-            redisTemplate.opsForValue().set(key, "SUCCESS");
+            redisTemplate.opsForValue().set(key, Task.SUCCESS);
         } catch (InterruptedException e) {
+            redisTemplate.opsForValue().set(key, Task.FAILURE);
             e.printStackTrace();
         }
         logger.info("Task Done. {}:{}", key, value);
