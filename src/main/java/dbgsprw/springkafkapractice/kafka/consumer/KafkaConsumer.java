@@ -10,8 +10,14 @@ import org.springframework.stereotype.Service;
 public class KafkaConsumer {
     private final Logger logger = LoggerFactory.getLogger(KafkaProducer.class);
 
-    @KafkaListener(topics = "${kafka.topic.name}", groupId = "${kafka.groupId}")
-    public void postingListener(String value) {
+    @KafkaListener(topics = "${kafka.topic.name}", groupId = "${kafka.groupId}", concurrency = "10")
+    public void doSomethingLongTimeTask(String value) {
         logger.info("Received message.");
+        try {
+            Thread.sleep(10000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        logger.info("Task Done.");
     }
 }
